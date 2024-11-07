@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 const kwhite = Colors.white;
 const kblack = Colors.black;
 final kBoxDecoration = BoxDecoration(
-    gradient: LinearGradient(
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter,
-        colors: [Colors.green.shade300, Colors.yellow.shade400]));
+    image: DecorationImage(
+        image: AssetImage("assets/images/image copy 2.png"),
+        fit: BoxFit.cover));
 const ktransparent = Colors.transparent;
+const textstyle =
+    TextStyle(color: kwhite, fontWeight: FontWeight.bold, fontSize: 27);
+final kCardColor = Colors.white.withOpacity(.85);
