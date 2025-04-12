@@ -1,12 +1,11 @@
 import 'package:bio_app/color.dart';
-
+import 'package:bio_app/screen/maruza_page.dart';
 import 'package:bio_app/screen/quiz_screen.dart';
 import 'package:flutter/material.dart';
 
 class MavzuPage extends StatelessWidget {
-  final List mavzuList;
-  final int index;
-  MavzuPage({super.key, required this.index, required this.mavzuList});
+  final ThemeModel mavzu;
+  MavzuPage({super.key, required this.mavzu});
 
   final List<IconData> icons = [
     Icons.document_scanner_outlined,
@@ -27,7 +26,7 @@ class MavzuPage extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  mavzuList[index]["Topic"],
+                  mavzu.title ?? "null",
                   style: textstyle.copyWith(overflow: TextOverflow.ellipsis),
                 ),
               ),
