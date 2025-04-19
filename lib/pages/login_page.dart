@@ -1,11 +1,13 @@
-import 'package:bio_app/color.dart';
+import 'package:bio_app/data/color.dart';
 import 'package:bio_app/core/constants/urls.dart';
 import 'package:bio_app/core/context_extension.dart';
 import 'package:bio_app/core/data/local/token_storage.dart';
 import 'package:bio_app/core/di/di.dart';
-import 'package:bio_app/screen/home_screen.dart';
+import 'package:bio_app/data/text_style.dart';
+import 'package:bio_app/pages/home_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPage extends StatefulWidget {
   final String apiUrl;
@@ -46,20 +48,19 @@ class _LoginPageState extends State<LoginPage> {
         child: Form(
           child: Center(
             child: Container(
-              height: MediaQuery.of(context).size.height * .5,
-              width: MediaQuery.of(context).size.width * .95,
+              height: MediaQuery.of(context).size.height * .6.h,
+              width: MediaQuery.of(context).size.width * .95.w,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20), color: kwhite),
+                  borderRadius: BorderRadius.circular(20.r), color: kwhite),
               child: Padding(
-                padding: const EdgeInsets.all(15),
+                padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                 child: Column(
-                  spacing: 30,
+                  spacing: 20.h,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Login",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    Text(
+                      "Kirish",
+                      style: TS.tsB(30.sp),
                     ),
                     textField(true, _emailController),
                     textField(false, _passwordController),
@@ -67,45 +68,48 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.topRight,
                       child: Text(
                         "Password yangilash",
-                        style: TextStyle(color: Color(0xff0d351a), height: 0),
+                        style: TextStyle(color: kMainColor, height: 0),
                       ),
                     ),
-                    InkWell(
-                      onTap: () async {
-                        if (_emailController.text.isNotEmpty &&
-                            _passwordController.text.isNotEmpty) {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          loginService.login(_emailController.text,
-                              _passwordController.text, widget.apiUrl, context);
-                          setState(() {
-                            isLoading = false;
-                          });
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    "Iltimos barcha maydonlarni to'ldiring")),
-                          );
-                        }
-                      },
-                      child: Center(
-                          child: Container(
-                        decoration: BoxDecoration(
-                            color: const Color(0xff0d351a),
-                            borderRadius: BorderRadius.circular(20)),
-                        height: 50,
-                        child: const Center(
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                    isLoading
+                        ? CircularProgressIndicator()
+                        : InkWell(
+                            onTap: () async {
+                              if (_emailController.text.isNotEmpty &&
+                                  _passwordController.text.isNotEmpty) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                loginService.login(
+                                    _emailController.text,
+                                    _passwordController.text,
+                                    widget.apiUrl,
+                                    context);
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "Iltimos barcha maydonlarni to'ldiring")),
+                                );
+                              }
+                            },
+                            child: Center(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                  color: kMainColor,
+                                  borderRadius: BorderRadius.circular(10.r)),
+                              height: 50,
+                              child: Center(
+                                child: Text(
+                                  "Login",
+                                  style: TS.tsBCW(20.sp),
+                                ),
+                              ),
+                            )),
                           ),
-                        ),
-                      )),
-                    ),
                   ],
                 ),
               ),
@@ -122,14 +126,14 @@ class _LoginPageState extends State<LoginPage> {
         keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(),
-          prefixIcon: Icon(isEmail ? Icons.email : Icons.lock),
-          hintText: isEmail ? "Email" : "Password",
+          prefixIcon: Icon(isEmail ? Icons.person : Icons.lock),
+          hintText: isEmail ? "Username" : "Password",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(10.r),
           ),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(13),
-              borderSide: const BorderSide(width: 4, color: Color(0xff0d351a))),
+              borderRadius: BorderRadius.circular(13.r),
+              borderSide: BorderSide(width: 4.w, color: kMainColor)),
         ));
   }
 }

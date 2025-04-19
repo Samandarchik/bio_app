@@ -10,3 +10,4 @@ const ktransparent = Colors.transparent;
 const textstyle =
     TextStyle(color: kwhite, fontWeight: FontWeight.bold, fontSize: 27);
 final kCardColor = Colors.white.withOpacity(.85);
+const kMainColor = Color(0xff0d351a);

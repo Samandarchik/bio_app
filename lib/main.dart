@@ -1,9 +1,10 @@
-import 'package:bio_app/core/context_extension.dart';
 import 'package:bio_app/core/data/local/token_storage.dart';
 import 'package:bio_app/core/di/di.dart';
-import 'package:bio_app/screen/home_screen.dart';
-import 'package:bio_app/screen/univer_list_page.dart';
+import 'package:bio_app/data/color.dart';
+import 'package:bio_app/pages/home_screen.dart';
+import 'package:bio_app/pages/univer_list_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,10 +20,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // home: TopicAdd(),
-      home: Loding(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+            theme: ThemeData(
+                scaffoldBackgroundColor: kwhite,
+                appBarTheme: const AppBarTheme(
+                    backgroundColor: kwhite,
+                    centerTitle: true,
+                    surfaceTintColor: kwhite)),
+            debugShowCheckedModeBanner: false,
+            home: Loding());
+      },
     );
   }
 }
@@ -37,21 +49,23 @@ class Loding extends StatefulWidget {
 class _LodingState extends State<Loding> {
   TokenStorage tokenStorage = sl<TokenStorage>();
 
-  Future<void> init() async {
-    await Future.delayed(const Duration(seconds: 2));
-    context.pushAndRemoveUntil(tokenStorage.getRefreshToken().isNotEmpty
-        ? const HomeScreen()
-        : const UniverListPage());
-  }
+  // Future<void> init() async {
+  //   await Future.delayed(const Duration(seconds: 0));
+  //   context.pushAndRemoveUntil(tokenStorage.getToken().isNotEmpty
+  //       ? const HomeScreen()
+  //       : const UniverListPage());
+  // }
 
-  @override
-  void initState() {
-    init();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   init();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return tokenStorage.getToken().isNotEmpty
+        ? const HomeScreen()
+        : const UniverListPage();
   }
 }

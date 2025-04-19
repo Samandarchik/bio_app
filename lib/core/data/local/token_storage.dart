@@ -1,9 +1,9 @@
 import 'base_storage.dart';
 
 final class TokenStorage {
-  static const String _token = 'access_token';
+  static const String _token = 'access';
   static const String _userId = 'user_id';
-  static const String _refreshToken = 'refresh_token';
+  static const String _refreshToken = 'refresh';
   static const String _username = 'username';
 
   final BaseStorage _baseStorage;

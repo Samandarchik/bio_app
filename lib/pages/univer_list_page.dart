@@ -1,7 +1,7 @@
-import 'package:bio_app/color.dart';
+import 'package:bio_app/data/color.dart';
 import 'package:bio_app/core/context_extension.dart';
-import 'package:bio_app/screen/login_page.dart';
-import 'package:bio_app/screen/service/univer_get_list_service.dart';
+import 'package:bio_app/pages/login_page.dart';
+import 'package:bio_app/services/univer_get_list_service.dart';
 import 'package:flutter/material.dart';
 
 class UniverListPage extends StatefulWidget {

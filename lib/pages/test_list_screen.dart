@@ -1,4 +1,4 @@
-import 'package:bio_app/color.dart';
+import 'package:bio_app/data/color.dart';
 import 'package:flutter/material.dart';
 
 class TestList extends StatelessWidget {

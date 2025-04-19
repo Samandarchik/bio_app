@@ -133,8 +133,8 @@ class AppInterceptors extends QueuedInterceptorsWrapper {
 
       if (refreshResponse.statusCode == 200) {
         // Yangi token va refresh tokenlarni saqlash
-        final accessToken = refreshResponse.data['access_token'];
-        final newRefreshToken = refreshResponse.data['refresh_token'];
+        final accessToken = refreshResponse.data['access'];
+        final newRefreshToken = refreshResponse.data['refresh'];
 
         await tokenStorage.putToken(accessToken);
         await tokenStorage.putRefreshToken(newRefreshToken);
