@@ -11,16 +11,14 @@ class TextPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: kBoxDecoration,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-                child: HtmlContentViewer(
-              htmlContent: text,
-              initialContentHeight: MediaQuery.of(context).size.height,
-              initialContentWidth: MediaQuery.of(context).size.width,
-            ))
-          ],
+        child: SafeArea(
+          child: Column(
+            children: [
+              HtmlContentViewer(
+                htmlContent: text,
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -23,8 +23,12 @@ class MavzuPage extends StatelessWidget {
   final List<String> items = ["Matn", "Audio", "Slayd", "Video"];
   List<Widget> get pages => [
         TextPage(text: mavzu.content),
-        AudioPage(audioUrl: mavzu.audio ?? ""),
-        SlaydPage(slaydUrl: mavzu.prezintatsiya ?? ""),
+        const AudioPage(
+          maxMin: 100,
+          // audioUrl:
+          //     "http://zoomedia.uz/media/theme/audio/relaxing-piano-310597.mp3"
+        ),
+        const PrezintatsiyaPage(),
         VideoPage(vidioUrl: mavzu.iframe ?? ""),
       ];
 
