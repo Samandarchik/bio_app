@@ -6,17 +6,16 @@ class TestList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("1-Mavzu"),
+        title: const Text("1-Mavzu"),
       ),
       body: Column(
         children: [
           ListView.builder(
               itemCount: 15,
               itemBuilder: (context, index) => Container(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         border: Border.all(
                           color: kblack,
@@ -25,9 +24,9 @@ class TestList extends StatelessWidget {
                     child: ListTile(
                       title: Text(
                         "${index + 1}-Test",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      trailing: Icon(Icons.check),
+                      trailing: const Icon(Icons.check),
                     ),
                   )),
         ],
