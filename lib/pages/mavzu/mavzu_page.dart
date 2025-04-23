@@ -3,6 +3,7 @@ import 'package:bio_app/data/text_style.dart';
 import 'package:bio_app/models/theme_model.dart';
 import 'package:bio_app/pages/mavzu/audio_page.dart';
 import 'package:bio_app/pages/mavzu/slayd_page.dart';
+import 'package:bio_app/pages/mavzu/url_new.dart';
 import 'package:bio_app/pages/mavzu/vidio_page.dart';
 import 'package:bio_app/pages/quiz_screen.dart';
 import 'package:bio_app/pages/mavzu/text_page.dart';
@@ -21,16 +22,17 @@ class MavzuPage extends StatelessWidget {
     Icons.videocam,
   ];
   final List<String> items = ["Matn", "Audio", "Slayd", "Video"];
-  List<Widget> get pages => [
-        TextPage(text: mavzu.content),
-        const AudioPage(
-          maxMin: 100,
-          // audioUrl:
-          //     "http://zoomedia.uz/media/theme/audio/relaxing-piano-310597.mp3"
-        ),
-        const PrezintatsiyaPage(),
-        VideoPage(vidioUrl: mavzu.iframe ?? ""),
-      ];
+  List<Widget> get pages {
+    return [
+      TextPage(text: mavzu.content),
+      // AudioPage(maxMin: 100, audioUrl: updateUrl(mavzu.audio ?? "")),
+      const AudioPage(audioUrl: "assets/mp3/zoologiya.mp3", maxMin: 2173),
+      PrezintatsiyaPage(
+        pptxUrl: updateUrl(mavzu.prezintatsiya ?? ""),
+      ),
+      VideoPage(vidioUrl: mavzu.iframe ?? ""),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

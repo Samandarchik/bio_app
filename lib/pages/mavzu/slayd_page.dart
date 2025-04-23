@@ -1,23 +1,58 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // SystemChrome uchun import
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:open_file/open_file.dart';
 
 class PrezintatsiyaPage extends StatefulWidget {
-  const PrezintatsiyaPage({Key? key}) : super(key: key);
+  final String pptxUrl;
+  const PrezintatsiyaPage({super.key, required this.pptxUrl});
 
   @override
   State<PrezintatsiyaPage> createState() => _PrezintatsiyaPageState();
 }
 
 class _PrezintatsiyaPageState extends State<PrezintatsiyaPage> {
-  final String pptxUrl =
-      "http://zoomedia.uz/media/theme/prezintatsiya/zoo_testing_1_mavzu.pptx";
   bool _isDownloading = false;
   double _downloadProgress = 0;
   String? _filePath;
   final Dio _dio = Dio();
+  bool _fileExists = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFileExists();
+
+    // Ekranning yo'nalishini vertikalga fikslash
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    // Widget o'chirilganda barcha yo'nalishlarni qayta ruxsat berish
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
+  Future<void> _checkFileExists() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final fileName = widget.pptxUrl.split('/').last;
+    _filePath = '${directory.path}/$fileName';
+
+    File file = File(_filePath!);
+    _fileExists = await file.exists();
+    setState(() {});
+  }
 
   Future<void> _downloadFile() async {
     setState(() {
@@ -26,20 +61,13 @@ class _PrezintatsiyaPageState extends State<PrezintatsiyaPage> {
     });
 
     try {
-      // Ilovaning ichki xotirasiga saqlash
       final directory = await getApplicationDocumentsDirectory();
-      final fileName = pptxUrl.split('/').last;
+      final fileName = widget.pptxUrl.split('/').last;
       _filePath = '${directory.path}/$fileName';
-
-      // Eski faylni o'chirish (agar mavjud bo'lsa)
-      File file = File(_filePath!);
-      if (await file.exists()) {
-        await file.delete();
-      }
 
       // Faylni yuklash
       await _dio.download(
-        pptxUrl,
+        widget.pptxUrl,
         _filePath,
         onReceiveProgress: (received, total) {
           if (total != -1) {
@@ -52,6 +80,7 @@ class _PrezintatsiyaPageState extends State<PrezintatsiyaPage> {
 
       setState(() {
         _isDownloading = false;
+        _fileExists = true;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -69,7 +98,23 @@ class _PrezintatsiyaPageState extends State<PrezintatsiyaPage> {
 
   Future<void> _openFile() async {
     if (_filePath != null) {
+      // Faylni ochishdan oldin ekran yo'nalishi uchun ruxsatlarni qaytarish
+      // Bu tashqi ilovalar to'g'ri yo'nalishda ishlashi uchun kerak
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+
       final result = await OpenFile.open(_filePath!);
+
+      // Fayl yopilgandan so'ng yana faqat portrait yo'nalishiga qaytarish
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+
       if (result.type != ResultType.done) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Faylni ochishda xatolik: ${result.message}')),
@@ -82,58 +127,38 @@ class _PrezintatsiyaPageState extends State<PrezintatsiyaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PPTX Yuklovchi'),
+        title: const Text('Slayd Yuklash'),
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'PowerPoint prezentatsiyasini yuklash',
-                style: Theme.of(context).textTheme.headlineSmall,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'URL manzili:\n$pptxUrl',
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 30),
-              if (_isDownloading)
-                Column(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isDownloading)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   children: [
                     LinearProgressIndicator(value: _downloadProgress),
-                    const SizedBox(height: 10),
-                    Text(
-                        'Yuklanmoqda: ${(_downloadProgress * 100).toStringAsFixed(0)}%'),
+                    const SizedBox(height: 8),
+                    Text('${(_downloadProgress * 100).toStringAsFixed(1)}%'),
                   ],
-                )
-              else
-                ElevatedButton(
-                  onPressed: _downloadFile,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 15),
-                  ),
-                  child: const Text('Yuklab olish',
-                      style: TextStyle(fontSize: 18)),
                 ),
-              const SizedBox(height: 20),
-              if (_filePath != null && !_isDownloading)
-                ElevatedButton(
-                  onPressed: _openFile,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 15),
-                  ),
-                  child: const Text('Faylni ochish',
-                      style: TextStyle(fontSize: 18)),
+              ),
+            ElevatedButton(
+              onPressed: _isDownloading
+                  ? null
+                  : (_fileExists ? _openFile : _downloadFile),
+              child: Text(_fileExists ? 'Faylni ochish' : 'Yuklash'),
+            ),
+            if (_fileExists)
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: ElevatedButton(
+                  onPressed: _isDownloading ? null : _downloadFile,
+                  child: const Text('Qayta yuklash'),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

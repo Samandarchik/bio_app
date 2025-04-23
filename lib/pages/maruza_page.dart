@@ -77,6 +77,7 @@ class ThemeService {
 
     if (response.statusCode == 200) {
       List<dynamic> data = response.data;
+      print("audio link ${data[0]['audio']}");
       return data.map<ThemeModel>((json) => ThemeModel.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch mavzu list');
