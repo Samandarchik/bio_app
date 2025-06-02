@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const kwhite = Colors.white;
 const kblack = Colors.black;
-final kBoxDecoration = BoxDecoration(
+const kBoxDecoration = BoxDecoration(
     image: DecorationImage(
         image: AssetImage("assets/images/image copy 2.png"),
         fit: BoxFit.cover));

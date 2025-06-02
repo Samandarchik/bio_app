@@ -12,6 +12,8 @@ void main() async {
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
+  // sl<TokenStorage>().removeRefreshToken();
+  // sl<TokenStorage>().removeToken();
   runApp(const MyApp());
 }
 

@@ -9,6 +9,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ktransparent,
+        surfaceTintColor: ktransparent,
+      ),
       body: Container(
         decoration: kBoxDecoration,
         child: SafeArea(

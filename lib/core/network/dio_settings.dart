@@ -13,8 +13,6 @@ class AppDioClient {
   Dio createDio() {
     final dio = Dio(BaseOptions(
       baseUrl: AppUrls.baseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
     ));
 
     // Logger interceptor qo'shish

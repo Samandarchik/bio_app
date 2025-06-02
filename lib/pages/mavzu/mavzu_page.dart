@@ -12,8 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MavzuPage extends StatelessWidget {
+  final int index;
   final ThemeModel mavzu;
-  MavzuPage({super.key, required this.mavzu});
+  MavzuPage({super.key, required this.mavzu, required this.index});
 
   final List<IconData> icons = [
     Icons.document_scanner_outlined,
@@ -26,7 +27,11 @@ class MavzuPage extends StatelessWidget {
     return [
       TextPage(text: mavzu.content),
       // AudioPage(maxMin: 100, audioUrl: updateUrl(mavzu.audio ?? "")),
-      const AudioPage(audioUrl: "assets/mp3/zoologiya.mp3", maxMin: 2173),
+      AudioPage(
+          audioUrl: index == 0
+              ? "assets/mp3/zoologiya.mp3"
+              : "assets/mp3/2_mavzu.mp3",
+          maxMin: 2173),
       PrezintatsiyaPage(
         pptxUrl: updateUrl(mavzu.prezintatsiya ?? ""),
       ),

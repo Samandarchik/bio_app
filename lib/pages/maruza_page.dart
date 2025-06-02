@@ -57,6 +57,7 @@ class _MaruzaPageState extends State<MaruzaPage> {
                             MaterialPageRoute(
                               builder: (context) => MavzuPage(
                                 mavzu: mavzuList[index],
+                                index: index,
                               ),
                             ),
                           ),
